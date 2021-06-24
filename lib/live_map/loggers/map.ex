@@ -5,7 +5,9 @@ defmodule LiveMap.Loggers.Map do
   schema "maps" do
     field :description, :string
     field :name, :string
-    field :user_id, :id
+
+    belongs_to :user, LiveMap.Accounts.User
+    has_many :points, LiveMap.Loggers.Point, on_delete: :delete_all
 
     timestamps()
   end
@@ -13,7 +15,7 @@ defmodule LiveMap.Loggers.Map do
   @doc false
   def changeset(map, attrs) do
     map
-    |> cast(attrs, [:name, :description])
-    |> validate_required([:name, :description])
+    |> cast(attrs, [:name, :description, :user_id])
+    |> validate_required([:name, :user_id])
   end
 end

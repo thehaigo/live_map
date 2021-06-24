@@ -10,6 +10,7 @@ defmodule LiveMap.Accounts.User do
     field :confirmed_at, :naive_datetime
     field :token, :string
 
+    has_many :maps, LiveMap.Loggers.Map
     timestamps()
   end
 
