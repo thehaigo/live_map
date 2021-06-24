@@ -5,8 +5,13 @@ defmodule LiveMapWeb.MapLive.Index do
   alias LiveMap.Loggers.Map
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :maps, list_maps())}
+  def mount(_params, session, socket) do
+    {
+      :ok,
+      socket
+      |> assign(:user_id, session["user_id"])
+      |> assign(:maps, list_maps())
+    }
   end
 
   @impl true
@@ -23,7 +28,7 @@ defmodule LiveMapWeb.MapLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Map")
-    |> assign(:map, %Map{})
+    |> assign(:map, %Map{ user_id: socket.assigns.user_id })
   end
 
   defp apply_action(socket, :index, _params) do
