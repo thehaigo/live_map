@@ -1,0 +1,27 @@
+<h1>Show Map</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, LiveMapWeb.MapLive.FormComponent,
+    id: @map.id,
+    title: @page_title,
+    action: @live_action,
+    map: @map,
+    return_to: Routes.map_show_path(@socket, :show, @map) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @map.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @map.description %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.map_show_path(@socket, :edit, @map), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.map_index_path(@socket, :index) %></span>

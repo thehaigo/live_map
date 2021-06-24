@@ -1,0 +1,37 @@
+<h1>Listing Maps</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, LiveMapWeb.MapLive.FormComponent,
+    id: @map.id || :new,
+    title: @page_title,
+    action: @live_action,
+    map: @map,
+    return_to: Routes.map_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="maps">
+    <%= for map <- @maps do %>
+      <tr id="map-<%= map.id %>">
+        <td><%= map.name %></td>
+        <td><%= map.description %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.map_show_path(@socket, :show, map) %></span>
+          <span><%= live_patch "Edit", to: Routes.map_index_path(@socket, :edit, map) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: map.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Map", to: Routes.map_index_path(@socket, :new) %></span>
