@@ -65,6 +65,13 @@ defmodule LiveMapWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    live "/maps", MapLive.Index, :index
+    live "/maps/new", MapLive.Index, :new
+    live "/maps/:id/edit", MapLive.Index, :edit
+
+    live "/maps/:id", MapLive.Show, :show
+    live "/maps/:id/show/edit", MapLive.Show, :edit
   end
 
   scope "/", LiveMapWeb do
