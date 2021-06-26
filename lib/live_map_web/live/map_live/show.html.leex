@@ -23,5 +23,8 @@
 
 </ul>
 
+<section id="googleMap" phx-update="ignore" phx-hook="Map">
+  <div id="map"></div>
+</section>
 <span><%= live_patch "Edit", to: Routes.map_show_path(@socket, :edit, @map), class: "button" %></span>
 <span><%= live_redirect "Back", to: Routes.map_index_path(@socket, :index) %></span>
