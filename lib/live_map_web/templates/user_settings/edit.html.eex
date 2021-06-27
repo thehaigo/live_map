@@ -1,5 +1,14 @@
 <h1>Settings</h1>
 
+<h3>Generate Token for IoT</h3>
+<%= form_for @conn, Routes.user_settings_path(@conn, :gen_token), fn f -> %>
+  <%= submit "Generate Token" %>
+<% end %>
+
+<%= if @conn.assigns.current_user.token do %>
+  <p><%= "token:" <> @conn.assigns.current_user.token %></p>
+<% end %>
+
 <h3>Change email</h3>
 
 <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>

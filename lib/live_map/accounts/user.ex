@@ -113,6 +113,18 @@ defmodule LiveMap.Accounts.User do
   end
 
   @doc """
+  Generate Auth Token for IoT Device
+  """
+  def gen_token_changeset(user) do
+    user
+    |> cast(%{}, [:token])
+    |> put_change(
+      :token,
+      Enum.random(100_000_000_000_000..999_999_999_999_999) |> Integer.to_string()
+    )
+  end
+
+  @doc """
   Verifies the password.
 
   If there is no user or the user doesn't have a password, we call

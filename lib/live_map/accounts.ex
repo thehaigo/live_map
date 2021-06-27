@@ -211,6 +211,12 @@ defmodule LiveMap.Accounts do
     end
   end
 
+  def generate_iot_token(%User{} = user) do
+    user
+    |> User.gen_token_changeset()
+    |> Repo.update()
+  end
+
   ## Session
 
   @doc """
