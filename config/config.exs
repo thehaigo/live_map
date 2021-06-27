@@ -10,6 +10,10 @@ use Mix.Config
 config :live_map,
   ecto_repos: [LiveMap.Repo]
 
+config :live_map, LiveMap.Guardian,
+  issuer: "live_map",
+  secret_key: "add generated secret by mix guardian.gen.secret"
+
 # Configures the endpoint
 config :live_map, LiveMapWeb.Endpoint,
   url: [host: "localhost"],
