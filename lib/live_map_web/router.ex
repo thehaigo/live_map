@@ -24,9 +24,11 @@ defmodule LiveMapWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", LiveMapWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", LiveMapWeb do
+    pipe_through :api
+
+    post "/sign_in", Api.UserController, :sign_in
+  end
 
   # Enables LiveDashboard only for development
   #

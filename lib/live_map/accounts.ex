@@ -5,6 +5,7 @@ defmodule LiveMap.Accounts do
 
   import Ecto.Query, warn: false
   alias LiveMap.Repo
+  alias LiveMap.Guardian
   alias LiveMap.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters
@@ -242,6 +243,23 @@ defmodule LiveMap.Accounts do
   def delete_session_token(token) do
     Repo.delete_all(UserToken.token_and_context_query(token, "session"))
     :ok
+  end
+
+  def token_sign_in(email, password) do
+    user = get_user_by_email_and_password(email, password)
+    if user do
+      Guardian.encode_and_sign(user)
+    else
+      { :error, :unauthorized }
+    end
+  end
+
+  def one_time_signin(token) do
+    if user = Repo.get_by(User, token: token) do
+      Guardian.encode_and_sign(user)
+    else
+      {:error, :unauthorized}
+    end
   end
 
   ## Confirmation
