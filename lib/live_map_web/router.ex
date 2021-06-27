@@ -3,6 +3,9 @@ defmodule LiveMapWeb.Router do
 
   import LiveMapWeb.UserAuth
 
+  alias LiveMapWeb.ApiAuthPipeline
+  alias LiveMapWeb.AuthHelper
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -17,6 +20,11 @@ defmodule LiveMapWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug ApiAuthPipeline
+    plug AuthHelper
+  end
+
   scope "/", LiveMapWeb do
     pipe_through :browser
 
@@ -28,6 +36,12 @@ defmodule LiveMapWeb.Router do
     pipe_through :api
 
     post "/sign_in", Api.UserController, :sign_in
+  end
+
+  scope "/api", LiveMapWeb do
+    pipe_through [:api, :jwt_authenticated]
+
+    resources "maps", Api.MapController, only: [:index, :show, :create]
   end
 
   # Enables LiveDashboard only for development
