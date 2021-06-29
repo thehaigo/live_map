@@ -42,6 +42,7 @@ defmodule LiveMapWeb.Router do
     pipe_through [:api, :jwt_authenticated]
 
     resources "maps", Api.MapController, only: [:index, :show, :create]
+    resources "points", Api.PointController, only: [:create]
   end
 
   # Enables LiveDashboard only for development

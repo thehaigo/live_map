@@ -7,6 +7,7 @@ defmodule LiveMap.Loggers do
   alias LiveMap.Repo
 
   alias LiveMap.Loggers.Map
+  alias LiveMap.Loggers.Point
 
   @doc """
   Returns the list of maps.
@@ -55,6 +56,12 @@ defmodule LiveMap.Loggers do
     |> Repo.insert()
   end
 
+
+  def create_point(attrs \\ %{}) do
+    %Point{}
+    |> Point.changeset(attrs)
+    |> Repo.insert()
+  end
   @doc """
   Updates a map.
 
