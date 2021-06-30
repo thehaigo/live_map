@@ -66,6 +66,7 @@ defmodule LiveMap.Loggers do
     %Point{}
     |> Point.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:created_point)
   end
   @doc """
   Updates a map.
@@ -99,6 +100,15 @@ defmodule LiveMap.Loggers do
   """
   def delete_map(%Map{} = map) do
     Repo.delete(map)
+  end
+
+  def subscribe({:map, map_id}) do
+    Phoenix.PubSub.subscribe(LiveMap.PubSub, "map:#{map_id}")
+  end
+
+  def broadcast({:ok, point}, :created_point = event) do
+    Phoenix.PubSub.broadcast(LiveMap.PubSub, "map:#{point.map_id}", {event, point})
+    {:ok, point}
   end
 
   @doc """

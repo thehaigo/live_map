@@ -4,8 +4,19 @@ defmodule LiveMapWeb.MapLive.Show do
   alias LiveMap.Loggers
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
+    Loggers.subscribe({:map, id})
     {:ok, socket}
+  end
+
+  @impl true
+  def handle_info({:created_point, point}, socket) do
+    {
+      :noreply,
+      socket
+      |> update(:points, fn points -> [point | points] |> Enum.reverse end)
+      |> push_event("created_point", %{ point: %{ lat: point.lat, lng: point.lng} })
+    }
   end
 
   @impl true

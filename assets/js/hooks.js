@@ -26,6 +26,9 @@ Hooks.Map = {
         });
       });
     });
+    this.handleEvent("created_point", ({ point }) => {
+      this.addMarker(point)
+    });
   },
   addMarker(point) {
     const marker = new google.maps.Marker({
