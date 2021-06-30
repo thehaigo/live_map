@@ -38,6 +38,11 @@ defmodule LiveMap.Loggers do
   """
   def get_map!(id), do: Repo.get!(Map, id)
 
+  def get_map_with_points!(id) do
+    Map
+    |> preload(:points)
+    |> Repo.get!(id)
+  end
   @doc """
   Creates a map.
 
