@@ -3,7 +3,7 @@ defmodule LiveMapWeb.Api.MapView do
   alias LiveMapWeb.Api.MapView
 
   def render("index.json", %{maps: maps}) do
-    %{data: render_many(maps, MapView, "map.json")}
+    render_many(maps, MapView, "map.json")
   end
 
   def render("show.json", %{map: map}) do
