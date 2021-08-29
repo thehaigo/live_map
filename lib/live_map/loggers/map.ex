@@ -3,7 +3,7 @@ defmodule LiveMap.Loggers.Map do
   import Ecto.Changeset
 
   schema "maps" do
-    field :description, :string
+    field :description, :string, default: ""
     field :name, :string
 
     belongs_to :user, LiveMap.Accounts.User
