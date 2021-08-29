@@ -18,10 +18,15 @@ defmodule LiveMap.Loggers do
       [%Map{}, ...]
 
   """
+  def list_maps(user_id) do
+    Map
+    |> where([m], m.user_id == ^user_id)
+    |> Repo.all
+  end
+
   def list_maps do
     Repo.all(Map)
   end
-
   @doc """
   Gets a single map.
 

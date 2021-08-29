@@ -4,7 +4,7 @@ defmodule LiveMapWeb.Api.MapController do
   alias LiveMap.Loggers
 
   def index(conn, _params) do
-    render(conn, "index.json", maps: Loggers.list_maps())
+    render(conn, "index.json", maps: Loggers.list_maps(conn.user_id))
   end
 
   def create(conn, map_params \\ %{}) do
