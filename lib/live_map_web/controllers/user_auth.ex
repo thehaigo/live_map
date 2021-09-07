@@ -37,6 +37,18 @@ defmodule LiveMapWeb.UserAuth do
     |> redirect(to: user_return_to || signed_in_path(conn))
   end
 
+  def webview_login(conn, user, params \\ %{}) do
+    if conn.assigns[:current_user] do
+      conn
+      |> redirect(to: "/sp/maps/#{params["id"]}")
+      |> halt()
+    else
+      conn
+      |> put_session(:user_return_to, "/sp/maps/#{params["id"]}")
+      |> log_in_user(user, params)
+    end
+  end
+
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
     put_resp_cookie(conn, @remember_me_cookie, token, @remember_me_options)
   end
@@ -146,5 +158,5 @@ defmodule LiveMapWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: "/"
+  defp signed_in_path(_conn), do: "/maps"
 end

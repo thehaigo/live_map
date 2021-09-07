@@ -25,10 +25,30 @@ defmodule LiveMapWeb.Router do
     plug AuthHelper
   end
 
+  pipeline :sp_browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug :fetch_current_user
+    plug :put_root_layout, {LiveMapWeb.LayoutView, :sp}
+  end
+
+
   scope "/", LiveMapWeb do
     pipe_through :browser
 
     live "/", PageLive, :index
+  end
+
+  scope "/sp", LiveMapWeb do
+    pipe_through [:sp_browser, :jwt_authenticated]
+    get "/:id", MapsController, :index
+  end
+
+  scope "/sp", LiveMapWeb do
+    pipe_through [:sp_browser ,:require_authenticated_user]
+    live "/maps/:id", MapLive.Map, :show
   end
 
   # Other scopes may use custom stacks.
