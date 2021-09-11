@@ -1,6 +1,5 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
-
+@import "../node_modules/bulma/bulma.sass";
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
 .phx-no-feedback .invalid-feedback {
@@ -90,7 +89,7 @@
 
 #map {
   height: 400px;
-  border-radius: 2em;
+  border-radius: 1em;
 }
 
 .sp-map {
