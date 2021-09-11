@@ -5,6 +5,8 @@ defmodule LiveMap.Loggers.Point do
   schema "points" do
     field :lat, :decimal
     field :lng, :decimal
+    field :device_id, :string
+    field :user_agent, :string
     field :user_id, :id
 
     belongs_to :map, LiveMap.Loggers.Map
@@ -15,7 +17,7 @@ defmodule LiveMap.Loggers.Point do
   @doc false
   def changeset(point, attrs) do
     point
-    |> cast(attrs, [:lat, :lng, :map_id, :user_id])
-    |> validate_required([:lat, :lng, :map_id, :user_id])
+    |> cast(attrs, [:lat, :lng, :map_id, :user_id, :device_id, :user_agent])
+    |> validate_required([:lat, :lng, :map_id, :user_id, :device_id, :user_agent])
   end
 end
