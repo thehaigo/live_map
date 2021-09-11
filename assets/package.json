@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.12.1",
+    "bulma": "^0.9.3",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "phoenix_live_view": "file:../deps/phoenix_live_view",
