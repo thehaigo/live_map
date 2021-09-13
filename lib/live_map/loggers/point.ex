@@ -3,8 +3,8 @@ defmodule LiveMap.Loggers.Point do
   import Ecto.Changeset
 
   schema "points" do
-    field :lat, :decimal
-    field :lng, :decimal
+    field :lat, :float
+    field :lng, :float
     field :device_id, :string
     field :user_agent, :string
     field :user_id, :id
