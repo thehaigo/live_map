@@ -14,7 +14,8 @@ defmodule LiveMap.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: LiveMap.PubSub},
       # Start the Endpoint (http/https)
-      LiveMapWeb.Endpoint
+      LiveMapWeb.Endpoint,
+      LiveMapWeb.Presence
       # Start a worker by calling: LiveMap.Worker.start_link(arg)
       # {LiveMap.Worker, arg}
     ]
