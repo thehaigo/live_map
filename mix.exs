@@ -20,7 +20,7 @@ defmodule LiveMap.MixProject do
   def application do
     [
       mod: {LiveMap.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :crypto]
     ]
   end
 
@@ -50,7 +50,8 @@ defmodule LiveMap.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
       {:guardian, "~> 2.0"},
-      {:geo, "~> 3.4"}
+      {:geo, "~> 3.4"},
+      {:elixir_uuid, "~> 1.2"}
     ]
   end
 

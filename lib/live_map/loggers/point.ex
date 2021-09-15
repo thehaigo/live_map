@@ -19,5 +19,15 @@ defmodule LiveMap.Loggers.Point do
     point
     |> cast(attrs, [:lat, :lng, :map_id, :user_id, :device_id, :user_agent])
     |> validate_required([:lat, :lng, :map_id, :user_id, :device_id, :user_agent])
+    |> validate_uuid(:device_id)
+  end
+
+  defp validate_uuid(changeset, field) when is_atom(field) do
+    validate_change(changeset, field, fn field, value ->
+      case UUID.info(value) do
+        {:ok, _info} -> []
+        {:error, reason} -> [{field, reason}]
+      end
+    end)
   end
 end
