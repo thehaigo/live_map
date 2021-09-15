@@ -45,7 +45,7 @@ defmodule LiveMap.Loggers do
 
   def get_map_with_points!(id) do
     Map
-    |> preload(:points)
+    |> preload(points: ^from(p in Point, order_by: [desc: p.inserted_at]))
     |> Repo.get!(id)
   end
   @doc """
