@@ -1,30 +1,75 @@
-<h1>Show Map</h1>
+<div class="columns">
+  <div class="column is-2">
+    <div class="content">
+      <span><%= live_patch "Edit", to: Routes.map_show_path(@socket, :edit, @map), class: "button" %></span>
+      <span><%= live_redirect "Back", to: Routes.map_index_path(@socket, :index), class: "button button-outline" %></span>
+      <ul>
+        <li>
+          <strong>Name:</strong>
+          <%= @map.name %>
+        </li>
 
-<%= if @live_action in [:edit] do %>
-  <%= live_modal @socket, LiveMapWeb.MapLive.FormComponent,
-    id: @map.id,
-    title: @page_title,
-    action: @live_action,
-    map: @map,
-    return_to: Routes.map_show_path(@socket, :show, @map) %>
-<% end %>
+        <li>
+          <strong>Description:</strong>
+          <%= @map.description %>
+        </li>
+      </ul>
+      <%= for device <- @devices do %>
+        <div class="card mb-5">
+          <header class="card-header">
+            <p class="card-header-title mb-0"><%= device.name %></p>
+            <button
+              class="card-header-icon p-0"
+              type="button"
+              phx-click="track"
+              phx-value-uuid=<%= device.uuid %>
+            >
+              <span class="icon">
+                <%= if device.tracking do %>
+                  <i class="mdi mdi-map-marker-radius mdi-24px"></i>
+                <% else %>
+                  <i class="mdi mdi-map-marker-radius-outline mdi-24px"></i>
+                <% end %>
+              </span>
+            </button>
+            <button
+              class="card-header-icon p-2"
+              type="button"
+              phx-click="viewing"
+              phx-value-uuid=<%= device.uuid %>
+            >
+              <span class="icon">
+                <%= if device.viewing do %>
+                  <i class="mdi mdi-map mdi-24px"></i>
+                <% else %>
+                  <i class="mdi mdi-map-outline mdi-24px"></i>
+                <% end %>
+              </span>
+            </button>
 
-<ul>
+          </header>
+          <div class="card-content">
+            <p>lat:<%= device.current_location.lat %></p>
+            <p>lng:<%= device.current_location.lng %></p>
+            <p class="is-size-7">updated:<%= device.current_location.inserted_at %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="column is-10">
+    <%= if @live_action in [:edit] do %>
+      <%= live_modal @socket, LiveMapWeb.MapLive.FormComponent,
+        id: @map.id,
+        title: @page_title,
+        action: @live_action,
+        map: @map,
+        return_to: Routes.map_show_path(@socket, :show, @map) %>
+    <% end %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @map.name %>
-  </li>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @map.description %>
-  </li>
-
-</ul>
-
-<section id="googleMap" phx-update="ignore" phx-hook="Map">
-  <div id="map"></div>
-</section>
-<span><%= live_patch "Edit", to: Routes.map_show_path(@socket, :edit, @map), class: "button" %></span>
-<span><%= live_redirect "Back", to: Routes.map_index_path(@socket, :index) %></span>
+    <section id="googleMap" phx-update="ignore" phx-hook="Map">
+      <div id="map"></div>
+    </section>
+  </div>
+</div>

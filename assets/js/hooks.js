@@ -3,48 +3,58 @@ let Hooks = {};
 
 Hooks.Map = {
   mounted() {
-    this.handleEvent("init_map", ({ points }) => {
+    this.handleEvent("init_map", ({ point, devices }) => {
       const loader = new Loader({
-        apiKey: "your API key",
+        apiKey: "your google map api key",
         version: "weekly",
       });
-
       loader.load().then(() => {
-        const center = points.length == 0 ?
+        const center = !point ?
           { lat: 33.30639, lng: 130.41806 }
           :
-          { lat: parseFloat(points[0].lat), lng: parseFloat(points[0].lng) }
+          { lat: point.lat, lng: point.lng }
 
         const map = new google.maps.Map(document.getElementById("map"), {
           center: center,
-          zoom: 9,
+          zoom: 12,
         });
         window.map = map;
-
-        points.forEach((point) => {
-          this.addMarker(point)
-        });
+        devices.forEach(device => window.map.data.addGeoJson(device))
       });
     });
-    this.handleEvent("created_point", ({ point }) => {
-      this.addMarker(point)
+
+    this.handleEvent("location_update", ({ uuid, latlng, point, points, viewing,tracking }) => {
+      window.map.data.forEach(device => {
+        if(device.i.name == `${uuid}Point`) {
+          window.map.data.remove(device)
+          window.map.data.addGeoJson(point)
+        }
+        if(viewing && device.i.name == `${uuid}LineString`) {
+          window.map.data.remove(device)
+          window.map.data.addGeoJson(points)
+        }
+        if(tracking) {
+          window.map.setCenter(latlng)
+        }
+      })
+
     });
-  },
-  addMarker(point) {
-    const marker = new google.maps.Marker({
-      position: { lat: parseFloat(point.lat), lng: parseFloat(point.lng)},
-      animation: google.maps.Animation.DROP,
-      icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          fillColor: '#00F',
-          fillOpacity: 0.6,
-          strokeColor: '#00A',
-          strokeOpacity: 0.9,
-          strokeWeight: 1,
-          scale: 2
+
+    this.handleEvent("track_device",({ point }) => {
+      window.map.setCenter({ lat: point.lat, lng: point.lng })
+    });
+
+    this.handleEvent("view_device_log", ({ uuid, json, viewing }) => {
+      if(viewing) {
+        window.map.data.addGeoJson(json)
+      } else {
+        window.map.data.forEach(device => {
+          if(device.i.name == `${uuid}LineString`) {
+            window.map.data.remove(device)
+          }
+        })
       }
-   })
-   marker.setMap(window.map)
+    })
   }
 };
 
