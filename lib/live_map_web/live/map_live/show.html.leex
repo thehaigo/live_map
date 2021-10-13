@@ -17,36 +17,39 @@
       <%= for device <- @devices do %>
         <div class="card mb-5">
           <header class="card-header">
-            <p class="card-header-title mb-0"><%= device.name %></p>
-            <button
-              class="card-header-icon p-0"
-              type="button"
-              phx-click="track"
-              phx-value-uuid=<%= device.uuid %>
-            >
-              <span class="icon">
-                <%= if device.tracking do %>
-                  <i class="mdi mdi-map-marker-radius mdi-24px"></i>
-                <% else %>
-                  <i class="mdi mdi-map-marker-radius-outline mdi-24px"></i>
-                <% end %>
-              </span>
-            </button>
-            <button
-              class="card-header-icon p-2"
-              type="button"
-              phx-click="viewing"
-              phx-value-uuid=<%= device.uuid %>
-            >
-              <span class="icon">
-                <%= if device.viewing do %>
-                  <i class="mdi mdi-map mdi-24px"></i>
-                <% else %>
-                  <i class="mdi mdi-map-outline mdi-24px"></i>
-                <% end %>
-              </span>
-            </button>
-
+            <div class="columns">
+              <p class="card-header-title mt-1 mb-0 is-size-7 column">
+                <%= device.name %>
+              </p>
+              <button
+                class="card-header-icon pl-0 column"
+                type="button"
+                phx-click="track"
+                phx-value-uuid=<%= device.uuid %>
+              >
+                <span class="icon">
+                  <%= if device.tracking do %>
+                    <i class="mdi mdi-map-marker-radius mdi-24px"></i>
+                  <% else %>
+                    <i class="mdi mdi-map-marker-radius-outline mdi-24px"></i>
+                  <% end %>
+                </span>
+              </button>
+              <button
+                class="card-header-icon pl-0 column"
+                type="button"
+                phx-click="viewing"
+                phx-value-uuid=<%= device.uuid %>
+              >
+                <span class="icon">
+                  <%= if device.viewing do %>
+                    <i class="mdi mdi-map mdi-24px"></i>
+                  <% else %>
+                    <i class="mdi mdi-map-outline mdi-24px"></i>
+                  <% end %>
+                </span>
+              </button>
+            </div>
           </header>
           <div class="card-content">
             <p>lat:<%= device.current_location.lat %></p>
