@@ -1,62 +1,92 @@
-<h1>Settings</h1>
+<div class="content">
+  <h1>Settings</h1>
 
-<h3>Generate Token for IoT</h3>
-<%= form_for @conn, Routes.user_settings_path(@conn, :gen_token), fn f -> %>
-  <%= submit "Generate Token" %>
-<% end %>
+  <h3>Generate Token for IoT</h3>
+  <%= form_for @conn, Routes.user_settings_path(@conn, :gen_token), fn f -> %>
+    <%= submit "Generate Token", class: "button is-info" %>
+  <% end %>
 
-<%= if @conn.assigns.current_user.token do %>
-  <p><%= "token:" <> @conn.assigns.current_user.token %></p>
-<% end %>
+  <%= if @conn.assigns.current_user.token do %>
+    <p><%= "token:" <> @conn.assigns.current_user.token %></p>
+  <% end %>
 
-<h3>Change email</h3>
+  <h3>Change email</h3>
 
-<%= form_for @email_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
-  <%= if @email_changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+  <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
+    <%= if @email_changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
+
+    <%= hidden_input f, :action, name: "action", value: "update_email" %>
+    <div class="field">
+      <%= label f, :email, class: "label" %>
+      <div class="control">
+        <%= email_input f, :email, required: true, class: "input" %>
+      </div>
+      <div class="help is-danger">
+        <%= error_tag f, :email %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= label f, :current_password, for: "current_password_for_email", class: "label" %>
+      <div class="control">
+        <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "input" %>
+      </div>
+      <div class="help is-danger">
+        <%= error_tag f, :current_password %>
+      </div>
+    </div>
+
+    <div>
+      <%= submit "Change email", class: "button is-light" %>
     </div>
   <% end %>
 
-  <%= hidden_input f, :action, name: "action", value: "update_email" %>
+  <h3>Change password</h3>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
-  <%= error_tag f, :email %>
+  <%= form_for @password_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
+    <%= if @password_changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
 
-  <%= label f, :current_password, for: "current_password_for_email" %>
-  <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email" %>
-  <%= error_tag f, :current_password %>
+    <%= hidden_input f, :action, name: "action", value: "update_password" %>
+    <div class="field">
+      <%= label f, :password, "New password", class: "label" %>
+      <div class="control">
+        <%= password_input f, :password, required: true, class: "input" %>
+      </div>
+      <div class="help is-danger">
+        <%= error_tag f, :password %>
+      </div>
+    </div>
 
-  <div>
-    <%= submit "Change email" %>
-  </div>
-<% end %>
+    <div class="field">
+      <%= label f, :password_confirmation, "Confirm new password", class: "label" %>
+      <div class="control">
+        <%= password_input f, :password_confirmation, required: true, class: "input" %>
+      </div>
+      <div class="help is-danger">
+        <%= error_tag f, :password_confirmation %>
+      </div>
+    </div>
 
-<h3>Change password</h3>
+    <div class="field">
+      <%= label f, :current_password, for: "current_password_for_password", class: "label" %>
+      <div class="control">
+        <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "input" %>
+      </div>
+      <div class="help is-danger">
+        <%= error_tag f, :current_password %>
+      </div>
+    </div>
 
-<%= form_for @password_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
-  <%= if @password_changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+    <div>
+      <%= submit "Change password", class: "button is-light" %>
     </div>
   <% end %>
-
-  <%= hidden_input f, :action, name: "action", value: "update_password" %>
-
-  <%= label f, :password, "New password" %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
-
-  <%= label f, :password_confirmation, "Confirm new password" %>
-  <%= password_input f, :password_confirmation, required: true %>
-  <%= error_tag f, :password_confirmation %>
-
-  <%= label f, :current_password, for: "current_password_for_password" %>
-  <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password" %>
-  <%= error_tag f, :current_password %>
-
-  <div>
-    <%= submit "Change password" %>
-  </div>
-<% end %>
+</div>
